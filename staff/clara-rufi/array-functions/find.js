@@ -1,15 +1,23 @@
-
 /**
  * Abstraction of find.
  * 
- * Push method returns the value of the first element in the array that satisfies the provided testing function. 
- * Otherwise undefined is returned.
+ * Finds an element in an array satisfying an expression.
  * 
+ * @param {Array} array - The array to search an item in.
+ * @param {Function} callback - The expression to evaluate.
  * 
- * @param {Array} array 
- * @param {*} value  
- * 
- * 
- * @throws {Error} - If too many arguments (> 4)
- * @throws {TypeError} - If array is not an array
- * 
+ * @returns {*} - An item if found, otherwise undefined.
+ */
+function find(array, callback) {
+    if (arguments.length > 2) throw Error('too many arguments');
+
+    if(!(array instanceof Array)) throw TypeError(array + ' is not an array');
+
+    if(!(callback instanceof Function)) throw TypeError(callback + ' is not a function');
+
+    for (var i = 0; i < array.length; i++) {
+        var value = array[i];
+
+        if(callback(value)) return value;
+    }
+}

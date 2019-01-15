@@ -1,12 +1,39 @@
+suite ("push")
 
-test('push all arguments', function () {
-    var arr = [1, 2, 3, 4, 5];
+test('should fail on none array', function () {
+    var error;
 
-    var res = array.push(6);
+    try {
+        push(null, 6);
+    } catch (err) {
+        error = err;
+    }
 
-    var expected = [1, 2, 3, 4, 5, 6]
-
-    if (res !== arr) throw Error('array and result should be the same');
-    if (res.toString() !== expected.toString()) throw Error('result should be the one expected');
-    if (arr.toString() !== expected.toString()) throw Error('array should have been changed to the one expected');
+    if (!error) throw Error('should have thrown an error');
+    if (!(error instanceof TypeError)) throw Error('should have thrown TypeError');
 });
+
+
+
+test('push arguments', function () {
+    var array = [1, 2, 3, 4, 5];
+
+    var res = push(array, 6);
+
+    var expected = 6 /*array.length*/  
+
+    if(res !== expected) throw Error(res + ' does not match expected ' + expected); 
+});
+
+
+test('push arguments 2', function () {
+    var array = [];
+
+    var res = push(array, 6, 55, 77);
+
+
+    var expected = 3  
+
+    if(res !== expected) throw Error(res + ' does not match expected ' + expected); 
+});
+
