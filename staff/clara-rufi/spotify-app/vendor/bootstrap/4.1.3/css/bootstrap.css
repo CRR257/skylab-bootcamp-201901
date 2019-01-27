@@ -64,9 +64,9 @@ body {
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
-  color: #212529;
+  color: #303c47;
   text-align: left;
-  background-color: #fff;
+  background-color: #bc3a3a;
 }
 
 [tabindex="-1"]:focus {
@@ -4378,8 +4378,9 @@ input[type="button"].btn-block {
   word-wrap: break-word;
   background-color: #fff;
   background-clip: border-box;
-  border: 1px solid rgba(0, 0, 0, 0.125);
+  border: 1.3px solid rgba(0, 0, 0, 0.125);
   border-radius: 0.25rem;
+  /* height: 2rem; */
 }
 
 .card > hr {
@@ -4593,6 +4594,8 @@ input[type="button"].btn-block {
 
 .card-columns .card {
   margin-bottom: 0.75rem;
+  margin-left: 0.6rem;
+  border: 0.2rem solid #4a4444;
 }
 
 @media (min-width: 576px) {
@@ -7649,6 +7652,7 @@ button.bg-dark:focus {
 
 .p-3 {
   padding: 1rem !important;
+  /* border-color: black; */
 }
 
 .pt-3,
