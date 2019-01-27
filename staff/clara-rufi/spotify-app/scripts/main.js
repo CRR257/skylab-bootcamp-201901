@@ -1,4 +1,4 @@
-spotifyApi.token = 'BQDkpMvc_LB0E0px3co2YYelw_4WWV5Cti7IAVh_pju9deaAvAWlDCC3GPjdR6Xi53YrpEv-iKAc9ozFJJOaZitKoXtJ69e30lJI-C5M9qkgfwcHNmvUuV289bRyvJaBuNWOnBB-1TcSBd5t7t5HfzXTfbHUhC8zdw'
+spotifyApi.token = 'BQBmAlU3smhG4baknqkU0Fpej0LiBNGiwrFvS9A2RQAXZ-xI0UuVpufX53w18JZGCTVwsYxRs4kZLEAVqIF_rkl8qTDZHwgxFN35sxIukYqfZ9mZKsHbB0X3TLPJcad5vjI2rqConnbgURrprc6PSay8YJQPKi_oJQ'
 // anar renovant el token cada vegada https://developer.spotify.com/console/get-artist/?id=0OdUWJ0sBjDrqHygGUXeCF fer get token
 // ara es mostra llista de cantants. fer q es mostri discs del cantant q seleccionem, les cançons q te a dins i dp un reproductor
 // reproductor el posarem dins d'un html. fer q els panells s'engegin i s'apaguin
@@ -83,19 +83,15 @@ albumPanel.onAlbumSelected = function (albumId){
 }
 
 tracksPanel.onTrackSelected = function (trackId){ 
-    console.log("ontrackselected main" + trackId)
     try {
         logic.retrieveTrack(trackId, function(error, track) {
-            console.log("retrieve" + trackId)
             if (error) trackPanel.error = error.message
             else {
-                debugger
+              
                 tracksPanel.hide()
-                console.log("aaa")
                 trackPanel.track = track
-                console.log('vvvv' + trackPanel.track)
                 trackPanel.show()
-                console.log("ccc")
+              
             }
         })
     } catch (err) {

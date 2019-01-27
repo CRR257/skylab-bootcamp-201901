@@ -67,16 +67,19 @@ h3 {
   color: black;
 }
 
-.card .tracks .list {
-  margin-left: 7rem;
+.player {
+  width: 20rem;
+  margin: 3rem 17rem;
 }
 
-.resultstracks {
-  margin-left: 7rem;
+.resultstracks_container {
+  margin-left: 0.6rem;
 }
 
-.card trackselected {
-  margin-left: 4rem;
+.card-img-top {
+  margin-left: 1.3rem;
+  width: 250px;
+  height: 250px;
 }
 
 /*# sourceMappingURL=main.css.map */

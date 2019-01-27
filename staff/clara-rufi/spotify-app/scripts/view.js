@@ -28,6 +28,9 @@ class SearchPanel extends Panel {
         this.__$form__ = this.$container.find('form')
         this.__$query__ = this.__$form__.find('input')
     
+        //  var errorPanel = new ErrorPanel;
+        // this.$container.append(errorPanel.$container);
+        // this.__errorPanel__ = errorPanel;
     }
     set onSearch(callback) {
         this.__$form__.on('submit', event => {
@@ -37,7 +40,12 @@ class SearchPanel extends Panel {
 
             callback(query)
         })
+    
     }
+    //    set error(message) {
+    //     this.__errorPanel__.message = message
+    //     this.__errorPanel__.show()
+    // }
 
     errorClear(){
         this.__errorPanel__.hide()
@@ -53,15 +61,20 @@ class ArtistsPanel extends Panel {
     </section>`))
 
         this.__$list__ = this.$container.find('div')
-    }
+    
 
+        // var errorPanel = new ErrorPanel;
+        // this.$container.append(errorPanel.$container);
+        // this.__errorPanel__ = errorPanel;
+    }
     set artists (artists){
      
-        artists.forEach(({ id, name}) =>{
+        artists.forEach(({ id, name, images}) =>{
+            const image = images[0] ? images[0].url : "styles/sorry-image-not-available.png" 
             const $item =$(`<div data-id=${id} class="card">
-        <div class="card-body">
+            <div class="card-body">
             <h5 class="card-title">${name}</h5>
-
+            <img src="${image}" class="card-img-top">
         </div>
     </div>`)
 
@@ -79,6 +92,11 @@ class ArtistsPanel extends Panel {
         this.__onArtistSelected__ = callback
     }
 
+        // set error(message) {
+        // this.__errorPanel__.message = message;
+        // this.__errorPanel__.show()
+    // }
+
     clear () {
         this.__$list__.empty()
     } 
@@ -95,6 +113,11 @@ class AlbumPanel extends Panel {
     </section>`))
 
         this.__$list__ = this.$container.find('div')
+    
+        // var errorPanel = new ErrorPanel;
+        // this.$container.append(errorPanel.$container);
+        // this.__errorPanel__ = errorPanel;
+    
     }
 
     set albums (albums){
@@ -114,22 +137,27 @@ class AlbumPanel extends Panel {
             })
 
             this.__$list__.append($item)
-    })
-}
-    set onAlbumSelected (callback) {
-        this.__onAlbumSelected__ = callback
+        })
     }
+        set onAlbumSelected (callback) {
+            this.__onAlbumSelected__ = callback
+        }
+
+    
+        // set error(message) {
+        // this.__errorPanel__.message = message;
+        // this.__errorPanel__.show()
+        // }
 
     clear () {
         this.__$list__.empty()
     } 
-}
 
+}
 class TracksPanel extends Panel{
     constructor(){
         super($(`<section class="resultstracks_container">
         <h3><u>Tracks</u></h3>
-       
         <div class="card-tracks"></div> 
         <ul></ul>
     </section>`))
@@ -156,7 +184,11 @@ class TracksPanel extends Panel{
         set onTrackSelected (callback) {
             this.__onTrackSelected__ = callback
         }
-
+        
+        // set error(message) {
+        // this.__errorPanel__.message = message;
+        // this.__errorPanel__.show()
+        // }
         clear () {
             this.__$list__.empty()
         } 
@@ -169,6 +201,7 @@ class TrackPanel extends Panel{
         <h3><u>Track selected</u></h3>
         <div class="resultstrack"></div> 
         <ul></ul>
+        <img class="player" src="styles/player.png">
     </section>`))
 
         this.__$list__ = this.$container.find('ul')
@@ -185,4 +218,9 @@ class TrackPanel extends Panel{
             this.__$list__.append($item)
             
     }
+
+        // set error(message) {
+        //     this.__errorPanel__.message = message
+        //     this.__errorPanel__.show()
+        // }
 }

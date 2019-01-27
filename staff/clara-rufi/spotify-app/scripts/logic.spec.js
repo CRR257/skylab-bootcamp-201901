@@ -25,27 +25,4 @@ describe('logic', function () {
         })
     })
 
-    describe('retrieveAlbums', function () {
-        it('should succeed on mathing query', function (done) {
-            const query = 'madonna'
-
-            logic.retrieveAlbums(artists, function (error, albums) {
-                expect(error).toBeUndefined()
-
-                expect(albums).toBeDefined()
-                expect(albums instanceof Array).toBeTruthy()
-                expect(albums.length).toBeGreaterThan(0)
-
-                albums.forEach(({ name }) => expect(name.toLowerCase()).toContain(albums))
-
-                done()
-            })
-        })
-
-        it('should fail on empty query', function () {
-            const albums = ''
-
-            expect(() => logic.searchArtists(artists, function (error, albums) { })).toThrowError('there are no albums for this artist')
-        })
-    })
-})
+   
