@@ -134,9 +134,9 @@ class AlbumPanel extends Panel {
 
         this.__$list__ = this.$container.find('div')
     
-        // var errorPanel = new ErrorPanel;
-        // this.$container.append(errorPanel.$container);
-        // this.__errorPanel__ = errorPanel;
+        var errorPanel = new ErrorPanel;
+        this.$container.append(errorPanel.$container);
+        this.__errorPanel__ = errorPanel;
     
     }
 
@@ -164,10 +164,10 @@ class AlbumPanel extends Panel {
         }
 
     
-        // set error(message) {
-        // this.__errorPanel__.message = message;
-        // this.__errorPanel__.show()
-        // }
+        set error(message) {
+        this.__errorPanel__.message = message;
+        this.__errorPanel__.show()
+        }
 
     clear () {
         this.__$list__.empty()
@@ -206,10 +206,10 @@ class TracksPanel extends Panel{
             this.__onTrackSelected__ = callback
         }
         
-        // set error(message) {
-        // this.__errorPanel__.message = message;
-        // this.__errorPanel__.show()
-        // }
+        set error(message) {
+        this.__errorPanel__.message = message;
+        this.__errorPanel__.show()
+        }
         clear () {
             this.__$list__.empty()
         } 
@@ -245,10 +245,10 @@ class TrackPanel extends Panel{
             
     }
 
-        // set error(message) {
-        //     this.__errorPanel__.message = message
-        //     this.__errorPanel__.show()
-        // }
+        set error(message) {
+            this.__errorPanel__.message = message
+            this.__errorPanel__.show()
+        }
 }
 
 // class PlayPanel extends Panel{

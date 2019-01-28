@@ -51,7 +51,7 @@ const logic = {
     /**
      * Retrieve a song from album on tracksPanel
      * 
-     * @param {string} albumtId 
+     * @param {string} trackId 
      * @param {function} callback 
      */
 

@@ -1,4 +1,4 @@
-spotifyApi.token = 'BQA4LOB1c1ZpN3m2JGb6ZaxWJB7UZG__j3D91C169e_ZvM0czBOl63E8cmIWUPnkNCRlJwvMGNBJUlqD-A8EQW-7IetHf0uD90WPkvNK74cRcomFLBpSK8sd3ecObMB7rBLAevR2WD0Ckr-qTGuMAhiBW0DMWombdQ'
+spotifyApi.token = 'BQDz0jJVfgtR2PnEIKDeRzC0VB7BcXzSS8Ojx3cVD_Hmlf5R1We2LnHBnn03fhU93eHs0At3VWVJWeZoYRwlsydBSw67c8SPo1gvXx3N8RF6Tzl_eVDO6PMOCqf3nS7EerO1oUyDi0OMyb8zBt6vc5zP0k-76cloIA'
 // anar renovant el token cada vegada https://developer.spotify.com/console/get-artist/?id=0OdUWJ0sBjDrqHygGUXeCF fer get token
 // ara es mostra llista de cantants. fer q es mostri discs del cantant q seleccionem, les cançons q te a dins i dp un reproductor
 // reproductor el posarem dins d'un html. fer q els panells s'engegin i s'apaguin
@@ -42,8 +42,8 @@ searchPanel.onSearch = function(query) {  //provar amb el grup muse
             else {
                 searchPanel.errorClear()
                 artistsPanel.artists = artists
-
                 artistsPanel.show()
+               
             }
         })
     } catch(err) {
@@ -63,6 +63,7 @@ artistsPanel.onArtistSelected = function (artistId) {
             artistsPanel.clear()
             albumPanel.albums = albums
             albumPanel.show()
+          
             }
         })              
     } catch (err) {
@@ -81,6 +82,7 @@ albumPanel.onAlbumSelected = function (albumId){
                 albumPanel.hide()
                 tracksPanel.tracks = tracks
                 tracksPanel.show()
+                albumPanel.clear()
 
             }
         })
