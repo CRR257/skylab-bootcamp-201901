@@ -82,4 +82,9 @@ h3 {
   height: 250px;
 }
 
+.error {
+  background-color: #ffa319;
+  margin-top: 1rem;
+}
+
 /*# sourceMappingURL=main.css.map */

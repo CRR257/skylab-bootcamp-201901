@@ -12,6 +12,25 @@ class Panel {
     }
 }
 
+class ErrorPanel extends Panel{  //no es mostrava l'error panel pq no el tenia construit
+    constructor(){
+    super($(`<section class="error container">
+    <h2>Error!!!</h2>
+    <p class="error"></p>
+    </section>`))
+
+    this.__$section__ = this.$container.find('p')
+    
+    }
+
+    set message(message){
+        this.__$section__.text(message)
+    }
+}
+
+
+
+
 class SearchPanel extends Panel {
     constructor() {
         super($(`<section class="search container">
@@ -28,9 +47,11 @@ class SearchPanel extends Panel {
         this.__$form__ = this.$container.find('form')
         this.__$query__ = this.__$form__.find('input')
     
-        //  var errorPanel = new ErrorPanel;
-        // this.$container.append(errorPanel.$container);
-        // this.__errorPanel__ = errorPanel;
+        var errorPanel = new ErrorPanel;
+        this.$container.append(errorPanel.$container);
+        this.__errorPanel__= errorPanel;
+        errorPanel.hide()
+
     }
     set onSearch(callback) {
         this.__$form__.on('submit', event => {
@@ -42,10 +63,10 @@ class SearchPanel extends Panel {
         })
     
     }
-    //    set error(message) {
-    //     this.__errorPanel__.message = message
-    //     this.__errorPanel__.show()
-    // }
+       set error(message) {
+        this.__errorPanel__.message = message
+        this.__errorPanel__.show()
+    }
 
     errorClear(){
         this.__errorPanel__.hide()
@@ -61,11 +82,10 @@ class ArtistsPanel extends Panel {
     </section>`))
 
         this.__$list__ = this.$container.find('div')
-    
 
-        // var errorPanel = new ErrorPanel;
-        // this.$container.append(errorPanel.$container);
-        // this.__errorPanel__ = errorPanel;
+        var errorPanel = new ErrorPanel;
+        this.$container.append(errorPanel.$container);
+        this.__errorPanel__ = errorPanel;
     }
     set artists (artists){
      
@@ -92,10 +112,10 @@ class ArtistsPanel extends Panel {
         this.__onArtistSelected__ = callback
     }
 
-        // set error(message) {
-        // this.__errorPanel__.message = message;
-        // this.__errorPanel__.show()
-    // }
+        set error(message) {
+        this.__errorPanel__.message = message;
+        this.__errorPanel__.show()
+        }
 
     clear () {
         this.__$list__.empty()
@@ -166,6 +186,7 @@ class TracksPanel extends Panel{
     }
 
     set tracks (tracks){
+        
         tracks.forEach(({id, name}) =>{
             
             const $item =$(`<li data-id=${id} class="card tracks list">${name}</li>`)
@@ -197,21 +218,26 @@ class TracksPanel extends Panel{
 
 class TrackPanel extends Panel{
     constructor(){
+   
         super($(`<section class="resultstracks_container">
         <h3><u>Track selected</u></h3>
         <div class="resultstrack"></div> 
         <ul></ul>
-        <img class="player" src="styles/player.png">
     </section>`))
 
         this.__$list__ = this.$container.find('ul')
+  
     }
 
-    set track ({id, name}) {
-        //console.log("track selected" + track)  /////////////////peta quan el poso
-
-        const $item = $(`<li data-id=${id} class="card trackselected">
-            <h5 class="card-text">${name}</h5>
+    set track (song) {
+        
+        //console.log("track selected" + track)  /////////////////peta quan el poso pq es un setter
+      
+        const $item = $(`<li data-id=${song.id} class="card trackselected">
+            <h5 class="card-text">${song.name}</h5>
+            <audio controls autoplay loop class="player">
+            <source src=${song.preview_url} type="audio/mpeg">${song.preview_url}
+        </audio>
         </li>`)
 
 
@@ -224,3 +250,27 @@ class TrackPanel extends Panel{
         //     this.__errorPanel__.show()
         // }
 }
+
+// class PlayPanel extends Panel{
+//     constructor(){
+//         super($(`<section class="results container">
+//         <ul></ul>
+//     </section>`))
+    
+//     this.__$song__=this.$container.find('ul')
+//     }
+
+//     set song(song){
+//         const $item=$(`<li data-id=${song.id} class="row pt-5">
+//             <h3 class="col-12 col-sm-6 text-center display-5">${song.name}</h3>
+//             <audio controls autoplay loop class="col-12 col-sm-6">
+//                 <source src=${song.preview_url} type="audio/mpeg">${song.preview_url}
+//             </audio>
+//         </li>`)
+//         this.__$song__.append($item)
+//     }
+
+//     clear(){
+//         this.__$song__.html('')
+//     }
+

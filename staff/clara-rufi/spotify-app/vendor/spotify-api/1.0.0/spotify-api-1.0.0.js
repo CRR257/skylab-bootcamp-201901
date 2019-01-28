@@ -18,7 +18,7 @@ const spotifyApi = {
      */
     //metode search artist
     searchArtists(query, callback) {
-        fetch(`https://api.spotify.com/v1/search?q=${query}&type=artist`, {
+        fetch(`https://api.spotify.com/v1/search?q=${query}&type=artist`, { //el fetch retorna una promise. si fem fetch('https://api.spotify.com/v1/search?q=${query}&type=artist')
             method: 'GET',
             headers: {
                 authorization: `Bearer ${this.token}`
@@ -70,7 +70,7 @@ const spotifyApi = {
             }
         })
             .then(res => res.json())
-            .then(({ items }) => callback(undefined, items))
+            .then(({ items }) => callback(undefined, items)) //destructiring. es un objecte, x aixo {}, nomes ens qdem amb la propietat items de l'objecte.
             .catch(callback)
     
     },
@@ -83,16 +83,25 @@ const spotifyApi = {
      * argument informs the error message, othwerwise first argument is undefined and second argument provides the matching 
      * results.
      */
-    retrieveTrack(trackId, callback) {
-        fetch(`https://api.spotify.com/v1/tracks/${trackId}`, {
+    retrieveTrack(songId, callback) {
+        fetch(`https://api.spotify.com/v1/tracks/${songId}`, {
             method: 'GET',
             headers: {
                 authorization: `Bearer ${this.token}`
             }
         })
             .then(res => res.json())
-            .then((items) => callback(undefined, items))  // pq no porta {} ?????
+            .then((items) => callback(undefined, items))  //aqui agafem objecte sencer, x aixo no ccalen {}
             .catch(callback)
         }
 }
 
+/*
+fetch('api spotify'){
+    .then(res => {
+        return res.json() //ho converteix a obj javascript
+    })
+    .then (res => console.log(res))
+
+}
+*/
