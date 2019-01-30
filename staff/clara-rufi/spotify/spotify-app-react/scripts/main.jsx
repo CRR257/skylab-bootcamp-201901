@@ -1,4 +1,4 @@
-spotifyApi.token = 'BQAxE-D5yla2j5ex_o3vXMu5wKz3pt249YemrCKNNwslY5tKaM4JwEvhYWQJVGtLsZiancvJ6ZsBtSNsgSV5-audWEuhEvkdaWj4siaFxLt5gG6Nl3wygHQzGoBcu4M_Yn7edbNNWc5git7rPVhjPvOUaYbZpyjmTw'
+spotifyApi.token = 'BQA_F5Yc3bcJqxiTJm2yyYSk3xvS6S_J4152BEla8JR2AYMA0N_lt6-V2AEQrrspqxTNl-GMJj9YhF-6s5n4dvn7QbZNH1yJNoLhX3i6xbX1YfQuZXS3mKdPIo596bGtRMwsW5DN1rLaquNC-dYkFUGXeTzN1LSsUA'
 //token => https://developer.spotify.com/console/get-artist/?id=0OdUWJ0sBjDrqHygGUXeCF
 
 class SearchPanel extends React.Component {
@@ -49,7 +49,7 @@ class ArtistsPanel extends React.Component {
 
                 if (error) console.log(error.message)
                 else {
-                    this.props.setAlbums(albums)
+                    this.props.setAlbums1(albums)
                     console.log(albums)
                 }
             })
@@ -64,7 +64,7 @@ class ArtistsPanel extends React.Component {
         const { artists } = this.props  //pq hem passat l'estat d'un pare al fill, o una funcio o un string, passen a ser props
         return <section className="resultsArtist container">
             <h3><u>Artists</u></h3>
-            <div class="card-columns"> 
+            <div className="card-columns"> 
          
             {
                 artists.map(artist => (
@@ -152,11 +152,11 @@ class TracksPanel extends React.Component {
         const { tracks } = this.props
         return <section className="resultstracks_container">
             <h3><u>Tracks</u></h3>
-            <div class="results_tracks"></div>
+            <div className="results_tracks"></div>
             {
                 tracks.map(track => (
                     <div className="card_tracks" key={track.id} onClick={() => this.getTrackId(track.id)} >
-                        <div class="card_tracks_list">{track.name}</div>
+                        <div className="card_tracks_list">{track.name}</div>
                     </div>
                 ))
             }
@@ -185,6 +185,9 @@ class TrackPanel extends React.Component {
     //         }     
     //     }
 
+    onGoBack= () =>{
+        this.props.onGoBack()
+    }
 
     render() {
         const { track } = this.props
@@ -193,12 +196,12 @@ class TrackPanel extends React.Component {
         return <section className="resultstracks_container">
             <div className="title_go_back">
             <h3><u>Track</u></h3>  
-            <button className="goBack" type="submit">Go Back to Tracks</button>
+            <button className="goBack" onClick={this.onGoBack}>Go Back to Tracks</button>
             </div>
            
       
             <div className="card_title-track">{track.name}</div>
-            <audio controls autoplay loop src={track.preview_url} class="player">
+            <audio controls autoPlay loop src={track.preview_url} class="player">
             </audio>
 
         </section>
@@ -209,6 +212,10 @@ class App extends React.Component { //app pot compartir info amb tots els fills,
     state = { artists: null, albums: null, tracks: null, track: null, artistsVisual: false, albumsVisual: false, tracksVisual: false, trackVisual: false }
 
     // artistsVisual => pq no es mostri el panell d'artistes. al ppi el definim com a false, q no es mostri
+
+    onGoBack = () =>{
+        this.setState({tracksVisual:true, trackVisual:false})
+    }
 
     setTrack = track => {
         this.setState({ track, tracksVisual: false, trackVisual: true })
@@ -233,15 +240,15 @@ class App extends React.Component { //app pot compartir info amb tots els fills,
        
 
         return <main>
-            <header class="text-center">
+            <header className="text-center">
             {title}
             </header>
          
             <SearchPanel setArtists={this.setArtists} />
-            {this.state.trackVisual && <TrackPanel track={this.state.track} trackVisual={this.state.trackVisual} />}
+            {this.state.trackVisual && <TrackPanel track={this.state.track} trackVisual={this.state.trackVisual} onGoBack={this.onGoBack} />}
             {this.state.tracksVisual && <TracksPanel tracks={this.state.tracks} tracksVisual={this.state.tracksVisual} setTrack={this.setTrack} />}
             {this.state.albumsVisual && <AlbumPanel setTracks={this.setTracks} albums={this.state.albums} albumVisual={this.state.artistsVisual} />}
-            {this.state.artistsVisual && <ArtistsPanel artists={this.state.artists} artistsVisual={this.state.artistsVisual} setAlbums={this.setAlbums} />}
+            {this.state.artistsVisual && <ArtistsPanel artists={this.state.artists} artistsVisual={this.state.artistsVisual} setAlbums1={this.setAlbums} />}
         </main>
 
         //{this.state.artists &&  <ArtistsPanel artists={this.state.artists}/>} li diem  q com q artists= null, artists és fals, q no es mostri     
