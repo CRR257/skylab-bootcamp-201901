@@ -1,0 +1,96 @@
+main {
+  background-color: #3a90c0;
+  border: 0.15rem solid #584f4f;
+}
+
+body {
+  background-color: #432a82;
+}
+
+ul {
+  margin: 0;
+  padding: 0.6rem;
+  text-indent: 1rem;
+}
+
+h1 {
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+}
+
+h2 {
+  margin-bottom: 1.5rem;
+}
+
+h3 {
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+  margin-left: 0.8rem;
+  font-size: 1.6rem;
+}
+
+.searchartist {
+  border-radius: 0.5rem;
+  border: 0.15rem solid black;
+  text-indent: 0.5rem;
+}
+
+.button {
+  border: 0.1rem solid #b9c2fc;
+}
+
+.card-columns .card {
+  margin-bottom: 0.75rem;
+  margin-left: 0.6rem;
+  border: 0.1rem solid #b9c2fc;
+}
+
+.card-title {
+  color: white;
+}
+
+.text-album {
+  color: black;
+  font-size: 0.9rem;
+}
+
+.card {
+  background-color: #1d3c9580;
+  width: 52rem;
+}
+
+.resultsalbum_container {
+  margin-left: 0.6rem;
+}
+
+.text-muted {
+  color: black;
+}
+
+.player {
+  width: 20rem;
+  margin: 3rem 17rem;
+}
+
+.resultstracks_container {
+  margin-left: 0.6rem;
+}
+
+.card-img-top {
+  margin-left: 1.3rem;
+  width: 250px;
+  height: 250px;
+}
+
+.error {
+  background-color: #ffa319;
+  margin-top: 1rem;
+}
+
+.card_trackselected {
+  text-align: center;
+  padding-top: 1rem;
+  margin-left: 6rem;
+}
+
+/*# sourceMappingURL=main.css.map */
