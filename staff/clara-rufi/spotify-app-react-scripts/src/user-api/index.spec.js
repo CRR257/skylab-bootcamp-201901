@@ -1,5 +1,13 @@
 // 'use strict'
 
+//POSTMAN
+// cada vegada q provem el test, estem registrant i eliminant el mateix usuari
+// per cada test, definirem un usuari. en el beforeEach creem l'usuari. el catch error en els podem estalviar, pq si hi ha error, salta la id
+// si el  method: 'GET', no cal posar-lo
+//retrive(_id, _token) es x recuperar dades
+//data.constructor !== Object li estas dient mostri error pq realment és un objecte
+//id instance of array, estas dient si es una array o no
+
 import userApi from '.'
 
 describe('user api', () => {

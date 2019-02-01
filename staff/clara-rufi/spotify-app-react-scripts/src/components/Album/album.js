@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import logic from '../../Logic/logic.js'
+import React, { Component } from 'react'
+import logic from '../../Logic/index.js'
 import './album.sass'  //en el cas del sass
 
 class Album extends Component {
