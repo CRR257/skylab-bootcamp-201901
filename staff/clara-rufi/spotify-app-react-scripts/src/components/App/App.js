@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import Album from '../Album/album.js'
-import Login from '../Login';
+import Login from '../Login/index'
 import Artists from '../Artists/artists.js';
 import Track from '../Track/track.js';
 import Tracks from '../Tracks/tracks.js';
 import Search from '../Search/search.js';
-import logic from '../../Logic/logic.js'; 
+import logic from '../../Logic/index'
 
 import '../../components/main.sass'
 

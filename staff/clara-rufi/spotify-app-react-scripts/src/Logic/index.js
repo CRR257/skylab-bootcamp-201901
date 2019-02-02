@@ -2,9 +2,9 @@
 // cont logic, guardarà un estat quan tingui id i token. Xo es declara sense estat, buit
 //el logic.retrieve, enviarà les dades guardades, no cal q les tornem a declarar
 
-'use strict'
+// 'use strict'
 
-import spotifyApi from '../spotify-api'
+import spotifyApi from '../Spotify_Api/spotify-api'
 import userApi from '../user-api'
 
 /**
@@ -56,7 +56,7 @@ const logic = {
      * @param {string} email 
      * @param {string} password 
      */
-    loginUser(email, password) {
+    login(email, password) {
         if (typeof email !== 'string') throw TypeError(email + ' is not a string')
 
         if (!email.trim().length) throw Error('email cannot be empty')
@@ -65,13 +65,12 @@ const logic = {
 
         if (!password.trim().length) throw Error('password cannot be empty')
 
-        return userApi.authenticate(email, password)
+        return userApi.loginUser(email, password)
             .then(({ id, token }) => {
                 this.__userId__ = id
                 this.__userApiToken__ = token
             })
     },
-
 
     retrieveUser() {
         return userApi.retrieve(this.__userId__, this.__userApiToken__)

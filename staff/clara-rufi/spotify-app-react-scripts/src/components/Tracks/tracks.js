@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import logic from '../../Logic/logic.js'
+import logic from '../../Logic/index'
 import './tracks.sass' 
 
 class Tracks extends Component {
