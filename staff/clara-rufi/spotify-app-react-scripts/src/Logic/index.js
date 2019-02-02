@@ -5,7 +5,7 @@
 // 'use strict'
 
 import spotifyApi from '../Spotify_Api/spotify-api'
-import userApi from '../user-api'
+import userApi from '../user-api/index'
 
 /**
  * Abstraction of business logic.
@@ -65,7 +65,7 @@ const logic = {
 
         if (!password.trim().length) throw Error('password cannot be empty')
 
-        return userApi.loginUser(email, password)
+        return userApi.authenticate(email, password)
             .then(({ id, token }) => {
                 this.__userId__ = id
                 this.__userApiToken__ = token

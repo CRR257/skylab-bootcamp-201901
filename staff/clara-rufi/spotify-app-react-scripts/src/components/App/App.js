@@ -15,6 +15,7 @@ class App extends Component { //app pot compartir info amb tots els fills, canvi
     state = { artists: null, color: null, albums: [], tracks: null, track: null, loginVisual: true, searchVisual: false, artistsVisual: false, albumsVisual: false, tracksVisual: false, trackVisual: false }
 
     handleLogin = (email,password) => {
+        debugger
         try {
             logic.login(email, password, user => {
                 console.log(user)
@@ -65,7 +66,7 @@ class App extends Component { //app pot compartir info amb tots els fills, canvi
             </header>
 
             {this.state.loginVisual && <Login onLogin={this.handleLogin}/>}
-            {this.state.searchVisual &&<Search setArtists={this.setArtists} />}
+            {this.state.searchVisual &&<Search setArtists={this.setArtists}/>}
             {this.state.artistsVisual && <Artists artists={this.state.artists} artistsVisual={this.state.artistsVisual} setAlbums1={this.setAlbums} />}
             {this.state.albumsVisual && <Album setTracks={this.setTracks} albums={this.state.albums} albumVisual={this.state.artistsVisual} onGoBackArtists={this.onGoBackArtists} />}
             {this.state.tracksVisual && <Tracks tracks={this.state.tracks} tracksVisual={this.state.tracksVisual} setTrack={this.setTrack} onGoBackAlbums={this.onGoBackAlbums}/>}

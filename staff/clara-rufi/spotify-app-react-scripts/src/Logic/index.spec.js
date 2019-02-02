@@ -7,7 +7,7 @@ const { env: { REACT_APP_SPOTIFY_API_TOKEN } } = process
 spotifyApi.token = REACT_APP_SPOTIFY_API_TOKEN
 
 describe('logic', () => {
-    describe('register', () => {
+    describe('register user', () => {
         const name = 'Manuel'
         const surname = 'Barzi'
         const email = `manuelbarzi@mail.com-${Math.random()}`
@@ -20,7 +20,7 @@ describe('logic', () => {
         )
 
         it('should fail on undefined name', () => {
-            const nasuedome = undefined
+            const name = undefined
             const surname = 'Barzi'
             const email = 'manuelbarzi@mail.com'
             const password = '123'
@@ -154,7 +154,7 @@ describe('logic', () => {
         })
     })
 
-    describe('login', () => {
+    describe('login user', () => {
         const name = 'Manuel'
         const surname = 'Barzi'
         const email = `manuelbarzi@mail.com-${Math.random()}`
@@ -174,7 +174,7 @@ describe('logic', () => {
         )
     })
 
-    describe('retrieve', () => {
+    describe('retrieve user', () => {
         const name = 'Manuel'
         const surname = 'Barzi'
         const email = `manuelbarzi@mail.com-${Math.random()}`
@@ -197,7 +197,9 @@ describe('logic', () => {
         )
     })
 
-    false && describe('search artists', () => {
+    // TODO updateUser and removeUser
+
+    describe('search artists', () => {
         it('should succeed on mathing query', () => {
             const query = 'madonna'
 
@@ -215,6 +217,67 @@ describe('logic', () => {
             const query = ''
 
             expect(() => logic.searchArtists(query, function (error, artists) { })).toThrowError('query is empty')
+        })
+    })
+
+    describe('retrieve albums', () => {
+        it('should succeed on mathing query', () => {
+            const artistId = '6tbjWDEIzxoDsBA1FuhfPW' // madonna
+
+            return logic.retrieveAlbums(artistId)
+                .then(albums => {
+                    expect(albums).toBeDefined()
+                    expect(albums instanceof Array).toBeTruthy()
+                    expect(albums.length).toBeGreaterThan(0)
+                })
+        })
+
+        it('should fail on empty artistId', function () {
+            const artistId = ''
+
+            expect(() => logic.retrieveAlbums(artistId)).toThrowError('artistId is empty')
+        })
+    })
+
+    describe('retrieve tracks', () => {
+        it('should succeed on mathing query', () => {
+            const albumId = '4hBA7VgOSxsWOf2N9dJv2X' // Rebel Heart Tour (Live)
+
+            return logic.retrieveTracks(albumId)
+                .then(tracks => {
+                    expect(tracks).toBeDefined()
+                    expect(tracks instanceof Array).toBeTruthy()
+                    expect(tracks.length).toBeGreaterThan(0)
+                })
+        })
+
+        it('should fail on empty albumId', function () {
+            const albumId = ''
+
+            expect(() => logic.retrieveTracks(albumId)).toThrowError('albumId is empty')
+        })
+    })
+
+    describe('retrieve track', () => {
+        it('should succeed on mathing query', () => {
+            const trackId = '5U1tMecqLfOkPDIUK9SVKa' // Rebel Heart Tour Intro - Live
+            const trackName = 'Rebel Heart Tour Intro - Live'
+
+            return logic.retrieveTrack(trackId)
+                .then(track => {
+                    expect(track).toBeDefined()
+
+                    const { id, name } = track
+
+                    expect(id).toBe(trackId)
+                    expect(name).toBe(trackName)
+                })
+        })
+
+        it('should fail on empty trackId', function () {
+            const trackId = ''
+
+            expect(() => logic.retrieveTrack(trackId)).toThrowError('trackId is empty')
         })
     })
 })

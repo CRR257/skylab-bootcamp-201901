@@ -8,19 +8,21 @@ class Search extends Component {
     searchArtists = event => this.setState({ search: event.target.value })
 
     onbuttonsubmited = event => {
+        debugger
         event.preventDefault()
 
         const { state: { search} } = this
 
         try {
             logic.searchArtists(search, (error, artists) => {
+                debugger
                 console.log('hola, search ')
 
                 if (error) console.log(error.message)
                 else {
                     this.props.setArtists(artists)
                    
-                    //this.setState({artists: artists}) //es el mateix q this.setState({artists})
+                    this.setState({artists: artists}) //es el mateix q this.setState({artists})
                 }
             })
         } catch (error) {
