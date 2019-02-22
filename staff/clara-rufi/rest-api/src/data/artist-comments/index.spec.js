@@ -176,7 +176,7 @@ describe('artist comments data', () => {
     })
 })
 
-})
+
 
     describe('retrieve', () => {
         const comment = {
@@ -500,13 +500,14 @@ describe('remove all', () => {
                 expect(contentFromFile instanceof Array).toBeTruthy()
                 expect(contentFromFile.length).toBe(0)
             })
+    
     })
    
 })
 
 after(() => fsp.writeFile(file, JSON.stringify([])))
-})
 
+})
 
 //     describe('delete', () => {
 //         const comment = {
@@ -601,4 +602,3 @@ after(() => fsp.writeFile(file, JSON.stringify([])))
 //                 })
 //         )
 //     })
-})

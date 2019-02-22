@@ -1,31 +1,65 @@
 require('dotenv').config()
 require('isomorphic-fetch')
 
+const { MongoClient } = require('mongodb')
 const expect = require('expect')
-
+const userApi = require('../user-api')
 const spotifyApi = require('../spotify-api')
-
+const artistComments = require('../data/artist-comments')
 const logic = require('.')
+const users = require('../data/users')
+const bcrypt = require('bcrypt')
 
-const { env: { SPOTIFY_API_TOKEN } } = process
+const { env: { DB_URL, SPOTIFY_API_TOKEN, JWT_SECRET } } = process
 
 spotifyApi.token = SPOTIFY_API_TOKEN
+logic.jwtSecret = JWT_SECRET
 
 describe('logic', () => {
+
+    let client
+
+    before(() =>
+        MongoClient.connect('mongodb://localhost/skylab', { useNewUrlParser: true })
+            .then(_client => {
+                client = _client
+
+                users.collection = client.db().collection('users')
+            })
+    )
+
+    false &&beforeEach(() =>
+    Promise.all([
+        artistComments.removeAll(),
+        users.collection.deleteMany()
+    ])
+)
     describe('register user', () => {
-        const name = 'Manuel'
-        const surname = 'Barzi'
-        const email = `manuelbarzi@mail.com-${Math.random()}`
-        const password = '123'
-        const passwordConfirm = password
+        const _user ={
+            name:  'Manuel',
+            surname : 'Barzi',
+            email : `manuelbarzi@mail.com-${Math.random()}`,
+            password : `123-${Math.random()}`,
+            }
 
         it('should succeed on valid data', () =>
             logic.registerUser(name, surname, email, password, passwordConfirm)
                 .then(id => {
                     expect(id).toBeDefined()
                     expect(typeof id).toBe('string')
+
+                    return users.findByEmail(email)
                 })
+            .then(user => {
+                expect(user.name).toBe(name)
+                expect(user.surname).toBe(surname)
+                expect(user.email).toBe(email)
+
+                return bcrypt.compare(password, user.password)
+                    .then(match => expect(match).toBeTruthy())
+            })
         )
+
 
         it('should fail on undefined name', () => {
             const name = undefined
@@ -163,49 +197,71 @@ describe('logic', () => {
     })
 
     describe('authenticate user', () => {
+
         const name = 'Manuel'
         const surname = 'Barzi'
         const email = `manuelbarzi@mail.com-${Math.random()}`
-        const password = '123'
-        const passwordConfirm = password
+        const password = `123-${Math.random()}`
+        // const passwordConfirm = password
 
         beforeEach(() =>
-            logic.registerUser(name, surname, email, password, passwordConfirm)
+            //logic.registerUser(name, surname, email, password, passwordConfirm)
+            bcrypt.hash(password, 10)
+                .then(hash => users.add({ name, surname, email, password: hash }))
         )
 
-        it('should succeed on correct credentials', () =>
-            logic.authenticateUser(email, password)
-                .then(({ id, token }) => {
-                    expect(id).toBeDefined()
-                    expect(token).toBeDefined()
-                })
-        )
+        // it('should succeed on correct credentials', () =>
+        //     logic.authenticateUser(email, password)
+        //         .then(({ id, token }) => {
+        //             expect(id).toBeDefined()
+        //             expect(token).toBeDefined()
+        //         })
+        // )
+        it('should succeed on correct credentials', () => {
+
+        logic.authenticateUser(_user.email, _user.password)
+            .then(({id, token}) => {
+                expect(id).toBeDefined()
+                expect(token).toBeDefined()
+
+            })
+        })
+
     })
 
     describe('retrieve user', () => {
-        const name = 'Manuel'
-        const surname = 'Barzi'
-        const email = `manuelbarzi@mail.com-${Math.random()}`
-        const password = '123'
-        const passwordConfirm = password
-        let _id, _token
+        
+        const _user ={
+            name : 'Manuel',
+            surname : 'Barzi',
+            email : `manuelbarzi@mail.com-${Math.random()}`,
+            password : '123'
+            }
+          
+            let _id, _token
 
         beforeEach(() =>
-            logic.registerUser(name, surname, email, password, passwordConfirm)
-                .then(() => logic.authenticateUser(email, password))
-                .then(({id, token}) => {
-                    _id = id,
-                    _token = token
+            // logic.registerUser(name, surname, email, password, passwordConfirm)
+            //     .then(() => logic.authenticateUser(email, password))
+            //     .then(({id, token}) => {
+            //         _id = id,
+            //         _token = token
+            //     })
+            users.add(_user)
+                .then(id => users.findById(id))
+                .then(user => {
+                    _id = user.id
+                    _token = jwt.sign({id: user.id}, 'secret', {expiresIn: '48h'})
                 })
         )
 
         it('should succeed on correct credentials', () =>
             logic.retrieveUser(_id, _token)
-                .then(user => {
-                    expect(user.id).toBe(_id)
-                    expect(user.name).toBe(name)
-                    expect(user.surname).toBe(surname)
-                    expect(user.email).toBe(email)
+                .then(({name, surname, password, email}) => {
+                    expect(name).toBe(_user.name)
+                    expect(surname).toBe(_user.surname)
+                    expect(email).toBe(_user.email)
+                    expect(password).toBe(_user.password)
                 })
         )
     })
@@ -255,19 +311,20 @@ describe('logic', () => {
         const name = 'Manuel'
         const surname = 'Barzi'
         const email = `manuelbarzi@mail.com-${Math.random()}`
-        const password = '123'
+        const password =  `123-${Math.random()}`
         const passwordConfirm = password
         const artistId = '6tbjWDEIzxoDsBA1FuhfPW' // madonna
         let _id, _token
 
         beforeEach(() =>
-            logic.registerUser(name, surname, email, password, passwordConfirm)
-                .then(() => logic.authenticateUser(email, password))
-                .then(({id, token}) => {
-                    _id = id,
-                    _token = token
-                })
-        )
+        userApi.register(name, surname, email, password)
+            .then(() => userApi.authenticate(email, password))
+            .then(({ id, token }) => {
+                _id = id
+                _token = token
+            })
+    )
+
 
         it('should succeed on correct data', () =>
             logic.toggleFavoriteArtist(_id, _token, artistId)
@@ -467,4 +524,12 @@ describe('logic', () => {
                 })
         )
     })
+
+    after(() =>
+    Promise.all([
+        artistComments.removeAll(),
+        users.collection.deleteMany()
+            .then(() => client.close())
+    ])
+)
 })

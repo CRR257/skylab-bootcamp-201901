@@ -1,12 +1,17 @@
 'use strict'
 
 const spotifyApi = require('../spotify-api')
-const userApi = require('../user-api')
+const users = require('../data/users')
+const artistComments = require('../data/artist-comments')
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
 
 /**
  * Abstraction of business logic.
  */
 const logic = {
+
+    jwtSecret: null,
     /**
     * Registers a user.
     * 
@@ -39,7 +44,15 @@ const logic = {
 
         if (password !== passwordConfirmation) throw Error('passwords do not match')
 
-        return userApi.register(name, surname, email, password)
+        //return userApi.register(name, surname, email, password)
+        return users.findByEmail(email)
+            .then(user => {
+
+                if (user) throw Error(`user with email ${email} already exists`)
+
+                return bcrypt.hash(password, 10)
+            })
+            .then(hash => users.add({ name, surname, email, password: hash }))             
     },
 
     /**
@@ -57,20 +70,36 @@ const logic = {
 
         if (!password.trim().length) throw Error('password cannot be empty')
 
-        return userApi.authenticate(email, password)
+        return users.findByEmail(email)
+            .then(user => {
+                if (!user) throw Error(`user with email ${email} not found`)
+
+                return bcrypt.compare(password, user.password)
+                    .then(match => {
+                        if (!match) throw Error('wrong credentials')
+
+                        const { id } = user
+
+                        const token = jwt.sign({ sub: id }, this.jwtSecret, { expiresIn: '4h' })
+
+                        return { id, token }
+                    })
+            })
     },
 
-    retrieveUser(userId, token) {
-        return userApi.retrieve(userId, token)
-            .then(({ id, name, surname, username: email, favoriteArtists = [], favoriteAlbums = [], favoriteTracks = [] }) => ({
-                id,
-                name,
-                surname,
-                email,
-                favoriteArtists,
-                favoriteAlbums,
-                favoriteTracks
-            }))
+      retrieveUser(userId, token) {
+        // TODO validate userId and token type and content
+
+        this.__verifyUserToken__(userId, token)
+
+        return users.findById(userId)
+            .then(user => {
+                if (!user) throw Error(`user with id ${id} not found`)
+
+                delete user.password
+
+                return user
+            })
     },
 
     // TODO updateUser and removeUser
@@ -114,7 +143,11 @@ const logic = {
      * @param {string} artistId - The id of the artist to toggle in favorites.
      */
     toggleFavoriteArtist(userId, token, artistId) {
-        return userApi.retrieve(userId, token)
+        // TODO validate arguments
+
+        this.__verifyUserToken__(userId, token)
+
+        return users.findById(userId)
             .then(user => {
                 const { favoriteArtists = [] } = user
 
@@ -123,12 +156,36 @@ const logic = {
                 if (index < 0) favoriteArtists.push(artistId)
                 else favoriteArtists.splice(index, 1)
 
-                return userApi.update(userId, token, { favoriteArtists })
+                user.favoriteArtists = favoriteArtists
+
+                return users.update(user)
             })
     },
 
-    addCommentToArtist(userId, token, artistId, comment) {
-        // TODO use artistComment
+    addCommentToArtist(userId, token, artistId, text) {
+        // TODO validate userId, token, artistId and text
+
+        this.__verifyUserToken__(userId, token)
+
+        const comment = {
+            userId,
+            artistId,
+            text,
+            date: new Date
+        }
+
+        return spotifyApi.retrieveArtist(artistId)
+            .then(({ error }) => {
+                if (error) throw Error(error.message)
+            })
+            .then(() => artistComments.add(comment))
+            .then(() => comment.id)
+    },
+
+    listCommentsFromArtist(artistId) {
+        // TODO validate artistId
+
+        return artistComments.find({ artistId })
     },
 
     /**
@@ -163,7 +220,11 @@ const logic = {
      * @param {string} albumId - The id of the album to toggle in favorites.
      */
     toggleFavoriteAlbum(userId, token, albumId) {
-        return userApi.retrieve(userId, token)
+        // TODO validate arguments
+
+        this.__verifyUserToken__(userId, token)
+
+        return users.findById(userId)
             .then(user => {
                 const { favoriteAlbums = [] } = user
 
@@ -172,7 +233,9 @@ const logic = {
                 if (index < 0) favoriteAlbums.push(albumId)
                 else favoriteAlbums.splice(index, 1)
 
-                return userApi.update(userId, token, { favoriteAlbums })
+                user.favoriteAlbums = favoriteAlbums
+
+                return users.update(user)
             })
     },
 
@@ -208,7 +271,11 @@ const logic = {
      * @param {string} trackId - The id of the track to toggle in favorites.
      */
     toggleFavoriteTrack(userId, token, trackId) {
-        return userApi.retrieve(userId, token)
+        // TODO validate arguments
+
+        this.__verifyUserToken__(userId, token)
+
+        return users.findById(userId)
             .then(user => {
                 const { favoriteTracks = [] } = user
 
@@ -217,7 +284,9 @@ const logic = {
                 if (index < 0) favoriteTracks.push(trackId)
                 else favoriteTracks.splice(index, 1)
 
-                return userApi.update(userId, token, { favoriteTracks })
+                user.favoriteTracks = favoriteTracks
+
+                return users.update(user)
             })
     }
 }

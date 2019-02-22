@@ -2,15 +2,19 @@ require('dotenv').config()
 
 require('isomorphic-fetch')
 
+const { MongoClient } = require('mongodb')
 const express = require('express')
 const bodyParser = require('body-parser')
 const spotifyApi = require('./spotify-api')
 
 const { registerUser, authenticateUser, retrieveUser, searchArtists, notFound } = require('./routes')
 
-const { env: { PORT, SPOTIFY_API_TOKEN }, argv: [, , port = PORT || 8080] } = process
+const { env: { PORT, SPOTIFY_API_TOKEN, DB_URL }, argv: [, , port = PORT || 8080] } = process
 
-spotifyApi.token = SPOTIFY_API_TOKEN
+//spotifyApi.token = SPOTIFY_API_TOKEN ja no el fem servir
+MongoClient.connect(DB_URL, { useNewUrlParser: true })
+    .then(client => {
+        spotifyApi.token = SPOTIFY_API_TOKEN
 
 const app = express()
 
@@ -26,6 +30,10 @@ router.get('/user/:id', retrieveUser)
 
 router.get('/artists', searchArtists)
 
+router.post('/artist/:artistId/comment', jsonBodyParser, addCommentToArtist)
+
+router.get('/artist/:artistId/comment', listCommentsFromArtist)
+
 // router.get('/artist/:id', retrieveArtist)
 
 // router.get('/album/:id', retrieveAlbum)
@@ -37,3 +45,6 @@ router.get('/artists', searchArtists)
 app.use('/api', router)
 
 app.listen(port, () => console.log(`server running on port ${port}`))
+
+})
+.catch(console.error)
