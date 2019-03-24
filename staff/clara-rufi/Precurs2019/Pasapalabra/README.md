@@ -1,7 +1,17 @@
+<<<<<<< HEAD
 Pasapalabra
 ________________________
 
 ![Pasalabra](./images/pasapalabra.png)
+=======
+Pasapalabra Timer 
+________________________
+
+![Pasalabra](./images/pasapalabra.png)
+##Introduction
+
+Pasapalabra's gama
+>>>>>>> develop
 
 ##Functional description
 
