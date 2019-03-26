@@ -1,0 +1,26 @@
+{
+  "name": "adevinta",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@s-ui/react-atom-label": "^1.4.0",
+    "@s-ui/react-atom-spinner": "1",
+    "@s-ui/react-atom-switch": "^1.4.0"
+  },
+  "devDependencies": {
+    "@s-ui/bundler": "5",
+    "@s-ui/component-peer-dependencies": "^1.7.0"
+  },
+  "scripts": {
+    "build": "sui-bundler build -C",
+    "start": "sui-bundler dev"
+  },
+  "eslintConfig": {
+    "extends": [
+      "./node_modules/@s-ui/lint/eslintrc.js"
+    ]
+  },
+  "author": "",
+  "license": "ISC"
+}

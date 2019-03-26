@@ -1,0 +1,41 @@
+@import '~@s-ui/react-atom-spinner/lib/index';
+@import './SUILoader/index';
+@import '~@schibstedspain/sui-theme/lib/index';
+@import '~@s-ui/react-atom-switch/lib/index';
+
+/* DEFAULT SIZE */
+$h-atom-switch-container-large: 42px !default;
+$h-atom-switch-large: 32px !default;
+$w-atom-switch-large: 56px !default;
+$w-atom-switch-circle-large: 32px !default;
+$m-atom-switch-circle-large--active: $m-xl !default;
+$h-atom-switch-input-container-large: 32px !default;
+
+$c-atom-switch--active: color-variation($c-primary, 1) !default;
+$c-atom-switch--active-shadow: rgba($c-black, .2);
+$c-atom-switch--default: color-variation($c-gray, 3) !default;
+
+
+$atom-switch-transition-time: .3s !default;
+%spinner-layer {
+    background-color: #6e51ee;
+    bottom: 0;
+    content: '';
+    left: 0;
+    right: 0;
+    top: 0;
+}
+
+.sui-AtomSwitch--active {
+    & .sui-AtomSwitch-container {
+      .sui-AtomSwitch-inputContainer {
+        background-color: red;
+        border: solid 1px $c-atom-switch--active;
+        cursor: pointer;
+      }
+    }
+
+    & .sui-AtomSwitch-circle {
+      box-shadow: 2px 0 2px 0 $c-atom-switch--active-shadow;
+    }
+  }
